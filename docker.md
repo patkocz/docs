@@ -1,27 +1,74 @@
 # Docker
 
+Docker is an open platform for developing, running and deploying applications inside containers. Docker can run on Windows, MacOS and Linux.
+
 ## Docker images
 
 Download docker image from docker hub
 
-```
-docker pull <image_name>:version    # default is lates
+```docker
+docker pull [OPTIONS] NAME[:TAG|@DIGEST]
+
+# OPTIONS
+-a: get all tags
+-q: suppress verbose output
+
+# Examples
 docker pull alpine
+docker pull alpine:latest
+docker pull alpine@sha256:3a7fea6c4cf9c25ccf2...
+
+# Pull image from different registry
+docker pull myregistry.local:5000/testing/test-image
+
+# Pull all images from registry
+docker pull -a alpine
+```
+
+To tag your image
+
+```docker
+docker tag SOURCE_IMAGE[:TAG] TARGET_IMAGE[:TAG]
+
+# Example
+docker tag apress/exampleapp:changed adamfreeman/exampleapp:changed
+```
+
+push your docker image to docker hub
+
+```docker
+docker push [OPTIONS] NAME[:TAG]
+
+# Example
+docker push username/my-repo
 ```
 
 Show downloaded images
 
-```
-docker images
+```docker
+docker images [OPTIONS] [REPOSITORY[:TAG]]
+
+# OPTIONS
+-a, --all:    show all images
+--format:     Pretty-print images using a Go template
+-q, --quiet:  show only ID
 ```
 
 Delete downloaded images
 
-```
+```docker
+docker rmi [OPTIONS] IMAGE [IMAGE...]
+
+# OPTIONA
+-f: force removal, even if exists container based on this image
+
+# Example
 docker rmi <image_id>
 docker rmi baa5d63471ea
+docker rmi -f alpine:latest
 
-docker rmi $(docker images -q)  # remove all images
+# remove all images
+docker rmi $(docker images -q)
 ```
 
 ## Dockerfile
@@ -66,6 +113,24 @@ docker start myApp
 docker start $(docker ps -aq)   # start all containers
 ```
 
+To create and run docker container in one step use
+
+```
+docker run
+```
+
+To stop running container run
+
+```
+docker stop <container_name>|<container_id>
+```
+
+To remove contaier run
+
+```
+docker rm <container_name>|<container_id>
+```
+
 docker diff shows the difference between file in container and image
 
 ```
@@ -76,6 +141,12 @@ To show logs from container run
 
 ```
 docker logs -f <container_name>|<container_id>
+```
+
+If You want to run command inside a container run
+
+```
+docker exec [OPTIONS] CONTAINER COMMAND [ARG...]
 ```
 
 ## Docker volumes
